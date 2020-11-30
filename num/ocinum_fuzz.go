@@ -11,7 +11,7 @@ package num
 import "strings"
 
 //go:generate sh -c "cd /tmp && go get -u github.com/dvyukov/go-fuzz/go-fuzz github.com/dvyukov/go-fuzz/go-fuzz-build"
-//go:generate go-fuzz-build github.com/godror/godror/num
+//go:generate go-fuzz-build github.com/blue1004jy/godror/num
 //go:generate go test -run=Corpus
 //go:generate echo -e "\n\tgo-fuzz -bin=./num-fuzz.zip -workdir=/tmp/fuzz\n"
 

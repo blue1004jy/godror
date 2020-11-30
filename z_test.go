@@ -32,7 +32,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 	"golang.org/x/sync/errgroup"
 
-	godror "github.com/godror/godror"
+	godror "github.com/blue1004jy/godror"
 )
 
 var (

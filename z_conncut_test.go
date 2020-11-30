@@ -20,7 +20,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/godror/godror"
+	"github.com/blue1004jy/godror"
 )
 
 // TestConnCut tests prepared statements handling connection cuting.

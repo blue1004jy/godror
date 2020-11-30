@@ -25,7 +25,7 @@ import (
 	"time"
 	"unsafe"
 
-	"github.com/godror/godror/dsn"
+	"github.com/blue1004jy/godror/dsn"
 )
 
 const getConnection = "--GET_CONNECTION--"
@@ -894,7 +894,7 @@ func (c *conn) ResetSession(ctx context.Context) error {
 	//
 	//     ORA-24459: OCISessionGet()
 	//
-	// See https://github.com/godror/godror/issues/57 for example.
+	// See https://github.com/blue1004jy/godror/issues/57 for example.
 
 	drv.mu.RLock()
 	pool := drv.pools[key]
@@ -971,7 +971,7 @@ func (c *conn) IsValid() bool {
 	//
 	//     ORA-24459: OCISessionGet()
 	//
-	// See https://github.com/godror/godror/issues/57 for example.
+	// See https://github.com/blue1004jy/godror/issues/57 for example.
 	c.mu.Lock()
 	defer c.mu.Unlock()
 	c.closeNotLocking()

@@ -13,7 +13,7 @@ import (
 	"testing"
 	"time"
 
-	godror "github.com/godror/godror"
+	godror "github.com/blue1004jy/godror"
 )
 
 func TestHeterogeneousPoolIntegration(t *testing.T) {

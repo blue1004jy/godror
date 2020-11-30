@@ -17,7 +17,7 @@ import (
 	"testing"
 	"time"
 
-	godror "github.com/godror/godror"
+	godror "github.com/blue1004jy/godror"
 )
 
 var _ godror.ObjectScanner = new(MyRecord)

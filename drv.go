@@ -69,7 +69,7 @@ import (
 
 	"github.com/go-logfmt/logfmt"
 
-	"github.com/godror/godror/dsn"
+	"github.com/blue1004jy/godror/dsn"
 )
 
 const (
