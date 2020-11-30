@@ -1,4 +1,4 @@
-module github.com/godror/godror
+module github.com/blue1004jy/godror
 
 go 1.13
 

@@ -905,7 +905,7 @@ func (st *statement) bindVarTypeSwitch(info *argInfo, get *dataGetter, value int
 		if info.isOut {
 			*get = st.dataGetStmt
 		}
-	case int, []int:
+	case int, []int, int8, int16:
 		info.typ, info.natTyp = C.DPI_ORACLE_TYPE_NUMBER, C.DPI_NATIVE_TYPE_INT64
 		if !nilPtr {
 			info.set = dataSetNumber
@@ -945,7 +945,7 @@ func (st *statement) bindVarTypeSwitch(info *argInfo, get *dataGetter, value int
 				*get = dataGetNumber
 			}
 		}
-	case uint, []uint:
+	case uint, []uint, uint8, uint16:
 		info.typ, info.natTyp = C.DPI_ORACLE_TYPE_NUMBER, C.DPI_NATIVE_TYPE_UINT64
 		if !nilPtr {
 			info.set = dataSetNumber
@@ -1674,6 +1674,12 @@ func dataSetNumber(dv *C.dpiVar, data []C.dpiData, vv interface{}) error {
 	case int:
 		i, x := 0, slice
 		C.dpiData_setInt64(&data[i], C.int64_t(x))
+	case int8:
+		i, x := 0, slice
+		C.dpiData_setInt64(&data[i], C.int64_t(x))
+	case int16:
+		i, x := 0, slice
+		C.dpiData_setInt64(&data[i], C.int64_t(x))
 	case []int:
 		for i, x := range slice {
 			C.dpiData_setInt64(&data[i], C.int64_t(x))
@@ -1759,6 +1765,12 @@ func dataSetNumber(dv *C.dpiVar, data []C.dpiData, vv interface{}) error {
 		}
 
 	case uint:
+		i, x := 0, slice
+		C.dpiData_setUint64(&data[i], C.uint64_t(x))
+	case uint8:
+		i, x := 0, slice
+		C.dpiData_setUint64(&data[i], C.uint64_t(x))
+	case uint16:
 		i, x := 0, slice
 		C.dpiData_setUint64(&data[i], C.uint64_t(x))
 	case []uint:
