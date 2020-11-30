@@ -1684,16 +1684,10 @@ func dataSetNumber(dv *C.dpiVar, data []C.dpiData, vv interface{}) error {
 		for i, x := range slice {
 			C.dpiData_setInt64(&data[i], C.int64_t(x))
 		}
-	case int8:
-		i, x := 0, slice
-		C.dpiData_setInt64(&data[i], C.int64_t(x))
 	case []int8:
 		for i, x := range slice {
 			C.dpiData_setInt64(&data[i], C.int64_t(x))
 		}
-	case int16:
-		i, x := 0, slice
-		C.dpiData_setInt64(&data[i], C.int64_t(x))
 	case []int16:
 		for i, x := range slice {
 			C.dpiData_setInt64(&data[i], C.int64_t(x))
@@ -1777,16 +1771,11 @@ func dataSetNumber(dv *C.dpiVar, data []C.dpiData, vv interface{}) error {
 		for i, x := range slice {
 			C.dpiData_setUint64(&data[i], C.uint64_t(x))
 		}
-	case uint8:
-		i, x := 0, slice
-		C.dpiData_setUint64(&data[i], C.uint64_t(x))
 	case []uint8:
 		for i, x := range slice {
 			C.dpiData_setUint64(&data[i], C.uint64_t(x))
 		}
-	case uint16:
-		i, x := 0, slice
-		C.dpiData_setUint64(&data[i], C.uint64_t(x))
+
 	case []uint16:
 		for i, x := range slice {
 			C.dpiData_setUint64(&data[i], C.uint64_t(x))

@@ -457,81 +457,52 @@ func (c *conn) init(onInit func(conn driver.Conn) error) error {
 }
 
 func (c *conn) initTZ() error {
-	if c.tzValid {
+	if c.params.Timezone != nil && (c.params.Timezone != time.Local || c.tzOffSecs != 0) {
 		return nil
 	}
 	c.params.Timezone = time.Local
-
-	key := time.Local.String() + "\t" + c.params.String()
-	c.drv.mu.RLock()
-	tz, ok := c.drv.timezones[key]
-	c.drv.mu.RUnlock()
-	if !ok {
-		c.drv.mu.Lock()
-		defer c.drv.mu.Unlock()
-		tz, ok = c.drv.timezones[key]
-	}
-	if ok {
-		c.params.Timezone, c.tzOffSecs = tz.Location, tz.offSecs
-		return nil
-	}
-	if Log != nil {
-		Log("msg", "initTZ", "key", key)
-	}
-	//fmt.Printf("initTZ BEG key=%q drv=%p timezones=%v\n", key, c.drv, c.drv.timezones)
-	// DBTIMEZONE is useless, false, and misdirecting!
-	// https://stackoverflow.com/questions/52531137/sysdate-and-dbtimezone-different-in-oracle-database
-	/*
-		const qry = "SELECT DBTIMEZONE, NVL(TO_CHAR(SYSTIMESTAMP, 'TZR'), TO_CHAR(SYSTIMESTAMP, 'TZH:TZM')) FROM DUAL"
-		ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
-		defer cancel()
-		st, err := c.prepareContextNotLocked(ctx, qry)
-		if err != nil {
-			//fmt.Printf("initTZ END key=%q drv=%p timezones=%v err=%v\n", key, c.drv, c.drv.timezones, err)
-			return fmt.Errorf("%s: %w", qry, err)
-		}
-		defer st.Close()
-		rows, err := st.(*statement).queryContextNotLocked(ctx, nil)
-		if err != nil {
-			if Log != nil {
-				Log("qry", qry, "error", err)
-			}
-			//fmt.Printf("initTZ END key=%q drv=%p timezones=%v err=%v\n", key, c.drv, c.drv.timezones, err)
-			return err
-		}
-		defer rows.Close()
-	*/
-	var dbTZ, timezone string
-
-	tz.Location, tz.offSecs, err = calculateTZ(dbTZ, timezone)
-	//fmt.Printf("calculateTZ(%q, %q): %p=%v, %v, %v\n", dbTZ, timezone, tz.Location, tz.Location, tz.offSecs, err)
-	if Log != nil {
-		Log("timezone", timezone, "tz", tz, "error", err)
-	}
-	if err == nil && tz.Location == nil {
-		if tz.offSecs != 0 {
-			err = fmt.Errorf("nil timezone from %q,%q", dbTZ, timezone)
-		} else {
-			tz.Location = time.UTC
-		}
-	}
-	if err != nil {
-		if Log != nil {
-			Log("msg", "initTZ", "error", err)
-		}
-		//fmt.Printf("initTZ END key=%q drv=%p timezones=%v err=%v\n", key, c.drv, c.drv.timezones, err)
-		panic(err)
-	}
-
-	c.params.Timezone, c.tzOffSecs, c.tzValid = tz.Location, tz.offSecs, tz.Location != nil
+	_, c.tzOffSecs = time.Now().In(c.params.Timezone).Zone()
 	if Log != nil {
 		Log("tz", c.params.Timezone, "offSecs", c.tzOffSecs)
 	}
 
-	if c.tzValid {
-		c.drv.timezones[key] = tz
+	// DBTIMEZONE is useless, false, and misdirecting!
+	// https://stackoverflow.com/questions/52531137/sysdate-and-dbtimezone-different-in-oracle-database
+	/*
+		const qry = "SELECT DBTIMEZONE, LTRIM(REGEXP_SUBSTR(TO_CHAR(SYSTIMESTAMP), ' [^ ]+$')) FROM DUAL"
+		ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+		defer cancel()
+		st, err := c.PrepareContext(ctx, qry)
+		if err != nil {
+			return errors.Errorf("%s: %w", qry, err)
+		}
+		defer st.Close()
+		rows, err := st.Query(nil) //lint:ignore SA1019 - it's hard to use QueryContext here
+		if err != nil {
+			if Log != nil {
+				Log("qry", qry, "error", err)
+			}
+			return nil
+		}
+		defer rows.Close()
+		var dbTZ, timezone string
+		vals := []driver.Value{dbTZ, timezone}
+		if err = rows.Next(vals); err != nil && err != io.EOF {
+			return errors.Errorf("%s: %w", qry, err)
+		}
+		dbTZ = vals[0].(string)
+		timezone = vals[1].(string)
+	*/
+	var dbTZ, timezone string
+	tz, off, err := calculateTZ(dbTZ, timezone)
+	if Log != nil {
+		Log("timezone", timezone, "tz", tz, "offSecs", off)
 	}
-	//fmt.Printf("initTZ END key=%q drv=%p timezones=%v err=%v\n", key, c.drv, c.drv.timezones, err)
+	if err != nil || tz == nil {
+		return err
+	}
+	c.params.Timezone, c.tzOffSecs = tz, off
+
 	return nil
 }
 
