@@ -1,11 +1,11 @@
-![Go](https://github.com/godror/godror/workflows/Go/badge.svg)
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/godror/godror)](https://pkg.go.dev/github.com/godror/godror)
-[![Go Report Card](https://goreportcard.com/badge/github.com/godror/godror)](https://goreportcard.com/report/github.com/godror/godror)
-[![codecov](https://codecov.io/gh/godror/godror/branch/master/graph/badge.svg)](https://codecov.io/gh/godror/godror)
+![Go](https://github.com/blue1004jy/godror/workflows/Go/badge.svg)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/blue1004jy/godror)](https://pkg.go.dev/github.com/blue1004jy/godror)
+[![Go Report Card](https://goreportcard.com/badge/github.com/blue1004jy/godror)](https://goreportcard.com/report/github.com/blue1004jy/godror)
+[![codecov](https://codecov.io/gh/blue1004jy/godror/branch/master/graph/badge.svg)](https://codecov.io/gh/blue1004jy/godror)
 
 # Go DRiver for ORacle
 
-[godror](https://godoc.org/pkg/github.com/godror/godror) is a package which is a
+[godror](https://godoc.org/pkg/github.com/blue1004jy/godror) is a package which is a
 [database/sql/driver.Driver](http://golang.org/pkg/database/sql/driver/#Driver)
 for connecting to Oracle DB, using Anthony Tuininga's excellent OCI wrapper,
 [ODPI-C](https://www.github.com/oracle/odpi).
@@ -28,7 +28,7 @@ example, the array size of the returned PL/SQL arrays can be set with
 
 ## Documentation
 
-See [Godror API Documentation](https://pkg.go.dev/github.com/godror/godror?tab=doc) and
+See [Godror API Documentation](https://pkg.go.dev/github.com/blue1004jy/godror?tab=doc) and
 the [Godror User Guide](https://godror.github.io/godror/doc/contents.html).
 
 ## Installation
@@ -36,7 +36,7 @@ the [Godror User Guide](https://godror.github.io/godror/doc/contents.html).
 Run:
 
 ```bash
-go get github.com/godror/godror
+go get github.com/blue1004jy/godror
 ```
 
 Then install Oracle Client libraries and you're ready to go!
@@ -68,7 +68,7 @@ Handling](https://godror.github.io/godror/doc/connection.html).
 To use the godror-specific functions, you'll need a `*godror.conn`.
 That's what `godror.DriverConn` is for!
 See [z_qrcn_test.go](./z_qrcn_test.go) for using that to reach
-[NewSubscription](https://godoc.org/github.com/godror/godror#Subscription).
+[NewSubscription](https://godoc.org/github.com/blue1004jy/godror#Subscription).
 
 ### Calling stored procedures
 
@@ -183,8 +183,8 @@ Just as with other Go projects, you don't want to change the import paths, but y
 in place, just set up different remotes:
 
 ```bash
-cd $GOPATH/src/github.com/godror/godror
-git remote add upstream https://github.com/godror/godror.git
+cd $GOPATH/src/github.com/blue1004jy/godror
+git remote add upstream https://github.com/blue1004jy/godror.git
 git fetch upstream
 git checkout -b master upstream/master
 
